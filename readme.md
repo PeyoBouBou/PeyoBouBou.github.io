@@ -1,73 +1,43 @@
-# <span style="color: #ff201e">Quick.</span> The fastest and easiest way to&nbsp;create a&nbsp;GitHub Pages website for your project.
-#### The Quick theme magically transforms your `README.md` into a GitHub Pages site, applying clean and visually appealing styles.
+# 🌐 Mon Site Web Statique
 
-<p class="ignore">Just see it yourself&thinsp;—&thinsp;<a href="https://devich.github.io/quick/">this page</a> is the same <code>README.md</code> file you’re reading, but with the Quick theme applied:</p>
+Bienvenue sur le dépôt de mon site web statique ! 🚀
 
-<a class="ignore" href="https://devich.github.io/quick/"><img src="assets/img/preview.png" alt="Quick preview"></a>
+---
 
-## Quick start PBO
+![Static Site](https://img.shields.io/badge/Static%20Site-HTML%2FCSS%2FJS-blue)
 
-1. Make sure a `README.md` file exists in the root directory of your repo, and GitHub Pages is enabled in your repository settings.
+Ce dépôt contient les fichiers sources de mon site web statique. Il n'y a rien de spécial ici, juste les éléments nécessaires pour afficher mon site web en ligne. 😊
 
-2. Create a file named `_config.yml` in the root directory of your repository. The file should contain the following content:
-```yaml
-remote_theme: devich/quick@0.0.1
-```
+## ✨ Description
 
-3. That’s it! There is no step 3. You now have a GitHub Pages website that’s based on your `README.md` file. The changes will take effect some time after you commit and push your updates to the repository. Enjoy your new website!
+Ce dépôt est dédié à mon site web personnel où je partage mes projets, mes articles de blog, et mes informations de contact.
 
+![Website](https://img.shields.io/badge/Website-Live-brightgreen)
 
-## Looking for a simple landing page for your project? 
+## ⚠️ Note Importante
 
-No problem! You’re not restricted to using `readme.md` as the index page of your site. Simply create a file named `index.md`, and this theme will use it as the home page. Feel free to create as many pages as you want and link them within your site.
+**Vous n'avez pas besoin de forker ce dépôt !** Ce projet est principalement pour usage personnel et démonstratif. Si vous êtes intéressé par la création de votre propre site web statique, je vous recommande de consulter des ressources et tutoriels en ligne adaptés à vos besoins.
 
-For instance, if you need a home page and an ‘About’ page, create files named `index.md` and `about.md`. Inside the `index.md` file, you can link to your ‘About’ page like this:
+---
 
-```md
-[About this project](about)
-```
+### 🚀 Technologies Utilisées
 
+- HTML
+- CSS
+- JavaScript
 
-## Fine tuning
-### Additional settings in _config.yml
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
-You can set additional parameters for the site in the `_config.yml` file.
+---
 
-The following options are available:
+### 📄 Licence
 
-- `lang:` sets the language of the site. E.g. `en-US`, `uk`, `pl`, `fr-CA` and so on. The default value is `en-US`.
-- `bg_color:` sets the background color of your website. Can be `dark`, `light` or `auto`. The default value is `auto`.
-- `theme_color:` sets the main accent color for buttons, links, etc. It can be <nobr><code class="highlighter-rouge" style="color:#c52f21">red</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#d92662">pink</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#c0208a">fuchsia</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#9136a3">purple</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#7540be">violet</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#524ed1">indigo</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#2060de">blue</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#0172ac">azure</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#047878">cyan</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#007a50">jade</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#398712">green</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#a5d601">lime</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#f2df0d">yellow</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#ffbf00">amber</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#ff9500">pumpkin</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#d24317">orange</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#ccc6b4">sand</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#ababab">grey</code>,</nobr> <nobr><code class="highlighter-rouge" style="color:#646b79">zinc</code> or <nobr><code class="highlighter-rouge" style="color:#525f7a">slate</code>.</nobr> The default value is <nobr><code class="highlighter-rouge" style="color:#0172ac">azure</code>.
-- `title:` sets the title of the site. If not set, your repository name will be used.
-- `description`: sets the meta description tag, which typically contains a concise, relevant summary of the page’s content.
-- `keywords`: sets keywords for the page, separated with commas.
-- `gtag`: sets your Google Analytics tag if needed (e.g. G-A1BCDEFGHI).
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
-Alternatively, you can copy the contents of the `_config.yml` file from the [theme repository](https://github.com/devich/quick/blob/main/_config.yml) into your own `_config.yml` file. This will give you access to all available options at once.
+---
 
+Merci de votre visite et bonne journée ! 🌟
 
-
-### Ignoring
-
-If there’s a block in the `README.md` file that you don’t want to display on the GitHub Pages site, you can format this block as HTML and assign the `class="ignore"` attribute to it.
-
-<p class="ignore">
-    This paragraph <a href="https://devich.github.io/quick/">will not be displayed</a>
-    on the site because it has an <code>"ignore"</code> class.
-</p>
-
-```html
-<p class="ignore">
-    This paragraph <a href="https://devich.github.io/quick/">will not be
-    displayed</a> on the site because it has an <code>"ignore"</code> class.
-</p>
-```
-
-
-### More customization
-
-If you need to use your own CSS styles, create a file `assets/css/custom.css` in your repository and add your styles to it.
-
-For a custom favicon, just place your file in `PNG` format at `assets/img/favicon.png`.
-
-For full control, clone this repository and modify the template as you need.
+![Thanks](https://img.shields.io/badge/Thanks%20for%20visiting%20%F0%9F%91%8B-blue)
