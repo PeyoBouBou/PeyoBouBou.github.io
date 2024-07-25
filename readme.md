@@ -8,6 +8,8 @@ Bienvenue sur le dépôt de mon site web statique ! 🚀
 
 Ce dépôt contient les fichiers sources de mon site web statique. Il n'y a rien de spécial ici, juste les éléments nécessaires pour afficher mon site web en ligne. 😊
 
+[![pages-build-deployment](https://github.com/PeyoBouBou/PeyoBouBou.github.io/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/PeyoBouBou/PeyoBouBou.github.io/actions/workflows/pages/pages-build-deployment)
+
 ## ✨ Description
 
 Ce dépôt est dédié à mon site web personnel où je partage mes projets, mes articles de blog, et mes informations de contact.
