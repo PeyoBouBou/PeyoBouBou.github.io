@@ -61,21 +61,12 @@
       font-size: 1px;
       user-select: none;
     }
-    /* Animation "pop" déjà présente */
+    /* Animations CSS */
     @keyframes pop {
-      0% {
-        transform: scale(0.5);
-        opacity: 0;
-      }
-      50% {
-        transform: scale(1.2);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(1);
-      }
+      0% { transform: scale(0.5); opacity: 0; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
     }
-    /* Autres animations */
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -95,7 +86,6 @@
       from { transform: translateX(-100%); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
     }
-    /* Classes d'animation */
     .animate-pop { animation: pop 0.5s ease-out; }
     .animate-fade { animation: fadeIn 0.5s ease-out; }
     .animate-rotate { animation: rotate 0.5s ease-out; }
@@ -217,11 +207,17 @@
         question: `
           <strong>Exercice 5 : Distance entre deux points</strong><br>
           Les coordonnées des points A et B sont respectivement A(2, 3) et B(8, 6).<br>
-          Calcule la distance entre ces deux points en utilisant le théorème de Pythagore.
+          Calcule la distance entre ces deux points en utilisant le théorème de Pythagore.<br>
+          <em>Choisissez la bonne réponse parmi les options suivantes :</em>
         `,
-        type: "number",
-        answer: Math.sqrt(Math.pow(8-2, 2) + Math.pow(6-3, 2)), // sqrt(36+9) ≈ 6.708
-        tolerance: 0.1,
+        type: "choice",
+        choices: [
+          "6.71",
+          "7.21",
+          "6.00",
+          "5.71"
+        ],
+        answer: "6.71",
         points: 15
       },
       {
@@ -243,7 +239,7 @@
           Calcule la hauteur de ce triangle en utilisant le théorème de Pythagore.
         `,
         type: "number",
-        answer: Math.sqrt(10*10 - Math.pow(10/2, 2)), // sqrt(100-25)=sqrt75 ≈ 8.66
+        answer: Math.sqrt(10*10 - Math.pow(10/2, 2)), // ≈ 8.66
         tolerance: 0.1,
         points: 10
       }
@@ -251,8 +247,9 @@
 
     let currentExercise = 0;
     let totalScore = 0;
-    // Tableau qui contiendra le récapitulatif de chaque réponse
     let userResponses = [];
+    // Variable pour compter les tentatives de la question en cours
+    let currentAttempts = 0;
 
     const exerciseContainer = document.getElementById("exercise-container");
     const scoreDisplay = document.getElementById("score");
@@ -272,52 +269,79 @@
       return str;
     }
 
-    // Fonction pour charger un exercice et y ajouter une watermark invisible
+    // Fonction pour charger un exercice et réinitialiser le compteur de tentatives
     function loadExercise(index) {
+      currentAttempts = 0; // Réinitialiser le compteur pour la nouvelle question
       if (index >= exercises.length) {
-        // Fin des exercices
         exerciseContainer.innerHTML = `
           <h2>Félicitations !</h2>
           <p>Vous avez terminé tous les exercices.<br>
              Score final : ${totalScore} / 100.
           </p>
         `;
-        updateRecap(); // Affiche le récap complet
+        updateRecap();
         return;
       }
 
       const ex = exercises[index];
       // Ajout d'une watermark (texte invisible)
       const watermark = `<span class="hidden-text">${generateWatermark()}</span>`;
-      exerciseContainer.innerHTML = `
+      let htmlContent = `
         <div class="question">
           ${ex.question} ${watermark}
         </div>
-        <input type="text" id="user-answer" placeholder="Votre réponse">
-        <button id="submit-btn">Vérifier</button>
-        <div class="feedback" id="feedback"></div>
       `;
+
+      if (ex.type === "choice") {
+        let choicesHtml = "";
+        ex.choices.forEach((choice, idx) => {
+          choicesHtml += `
+            <div>
+              <input type="radio" name="user-choice" value="${choice}" id="choice${idx}">
+              <label for="choice${idx}">${choice}</label>
+            </div>
+          `;
+        });
+        htmlContent += choicesHtml;
+      } else {
+        htmlContent += `<input type="text" id="user-answer" placeholder="Votre réponse">`;
+      }
+      htmlContent += `<button id="submit-btn">Vérifier</button>
+                      <div class="feedback" id="feedback"></div>`;
+
+      exerciseContainer.innerHTML = htmlContent;
 
       document.getElementById("submit-btn").addEventListener("click", function() {
         checkAnswer(ex);
       });
     }
 
-    // Fonction de vérification de la réponse
+    // Fonction de vérification de la réponse avec limite de 2 tentatives
     function checkAnswer(ex) {
-      const userAnswer = document.getElementById("user-answer").value.trim();
-      const feedback = document.getElementById("feedback");
-
-      if (userAnswer === "") {
-        feedback.textContent = "Veuillez entrer une réponse.";
-        feedback.className = "feedback error";
-        return;
+      let userAnswer = "";
+      if (ex.type === "choice") {
+        const selected = document.querySelector('input[name="user-choice"]:checked');
+        if (!selected) {
+          const feedback = document.getElementById("feedback");
+          feedback.textContent = "Veuillez sélectionner une option.";
+          feedback.className = "feedback error";
+          return;
+        }
+        userAnswer = selected.value;
+      } else if (ex.type === "number" || ex.type === "text") {
+        userAnswer = document.getElementById("user-answer").value.trim();
+        if (userAnswer === "") {
+          const feedback = document.getElementById("feedback");
+          feedback.textContent = "Veuillez entrer une réponse.";
+          feedback.className = "feedback error";
+          return;
+        }
       }
 
+      const feedback = document.getElementById("feedback");
       let isCorrect = false;
 
       if (ex.type === "number") {
-        // Autoriser la virgule comme séparateur décimal
         const userValue = parseFloat(userAnswer.replace(',', '.'));
         if (isNaN(userValue)) {
           feedback.textContent = "Veuillez entrer un nombre valide.";
@@ -327,47 +351,62 @@
         if (Math.abs(userValue - ex.answer) <= ex.tolerance) {
           isCorrect = true;
         }
-      } else if (ex.type === "text") {
+      } else if (ex.type === "text" || ex.type === "choice") {
         if (userAnswer.toLowerCase() === ex.answer.toLowerCase()) {
           isCorrect = true;
         }
       }
 
-      // Sauvegarder la réponse dans le récapitulatif
-      userResponses[currentExercise] = {
-        question: ex.question.replace(/<[^>]*>/g, ''), // suppression des balises HTML
-        userAnswer: userAnswer,
-        isCorrect: isCorrect,
-        points: isCorrect ? ex.points : 0
-      };
-
-      // Choix aléatoire d'une animation parmi plusieurs
-      const animations = ["animate-pop", "animate-fade", "animate-rotate", "animate-bounce", "animate-slide"];
-      const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-
+      // Si la réponse est correcte, on enregistre et on passe à la question suivante
       if (isCorrect) {
+        userResponses[currentExercise] = {
+          question: ex.question.replace(/<[^>]*>/g, '').trim(),
+          userAnswer: userAnswer,
+          isCorrect: true,
+          points: ex.points
+        };
         totalScore += ex.points;
         scoreDisplay.textContent = totalScore;
+        // Sélection aléatoire d'une animation parmi plusieurs
+        const animations = ["animate-pop", "animate-fade", "animate-rotate", "animate-bounce", "animate-slide"];
+        const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
         feedback.textContent = "Bonne réponse !";
         feedback.className = "feedback correct " + randomAnimation;
-        // Retirer l'animation après 500 ms
         setTimeout(() => {
           feedback.classList.remove(randomAnimation);
         }, 500);
-        // Passage à l'exercice suivant après un délai
         setTimeout(() => {
           currentExercise++;
           loadExercise(currentExercise);
         }, 1000);
       } else {
-        feedback.textContent = "Mauvaise réponse, réessaye !";
-        feedback.className = "feedback error";
+        // La réponse est incorrecte, on incrémente le compteur de tentatives
+        currentAttempts++;
+        if (currentAttempts < 2) {
+          feedback.textContent = `Mauvaise réponse, réessaye ! Il te reste ${2 - currentAttempts} tentative(s).`;
+          feedback.className = "feedback error";
+          // On ne passe pas à la question suivante tant qu'une tentative reste
+          return;
+        } else {
+          // Deux tentatives épuisées, on enregistre comme incorrect et on passe à la question suivante
+          userResponses[currentExercise] = {
+            question: ex.question.replace(/<[^>]*>/g, '').trim(),
+            userAnswer: userAnswer,
+            isCorrect: false,
+            points: 0
+          };
+          feedback.textContent = "Mauvaise réponse, passons à la question suivante !";
+          feedback.className = "feedback error";
+          setTimeout(() => {
+            currentExercise++;
+            loadExercise(currentExercise);
+          }, 1000);
+        }
       }
-      // Met à jour le récapitulatif après chaque réponse
       updateRecap();
     }
 
-    // Fonction de mise à jour du récapitulatif
+    // Mise à jour du récapitulatif
     function updateRecap() {
       recapBody.innerHTML = "";
       userResponses.forEach((resp, idx) => {
@@ -384,16 +423,12 @@
       });
     }
 
-    // Fonction pour afficher ou masquer le récapitulatif
+    // Afficher ou masquer le récapitulatif
     function toggleRecap() {
-      if (recapSection.style.display === "none") {
-        recapSection.style.display = "block";
-      } else {
-        recapSection.style.display = "none";
-      }
+      recapSection.style.display = recapSection.style.display === "none" ? "block" : "none";
     }
 
-    // Fonction pour sauvegarder la progression sous forme d'une chaîne encodée en Base64
+    // Sauvegarder la progression en Base64 (données encodées)
     function saveProgress() {
       const progress = {
         currentExercise,
@@ -405,7 +440,7 @@
       prompt("Copiez cette chaîne pour sauvegarder votre progression :", encoded);
     }
 
-    // Fonction pour restaurer la progression depuis une chaîne encodée en Base64
+    // Restaurer la progression depuis une chaîne encodée en Base64
     function restoreProgress() {
       const data = prompt("Collez votre sauvegarde de progression :");
       try {
@@ -422,7 +457,6 @@
       }
     }
 
-    // Ajout des écouteurs sur les boutons de contrôle
     recapBtn.addEventListener("click", toggleRecap);
     saveBtn.addEventListener("click", saveProgress);
     restoreBtn.addEventListener("click", restoreProgress);
