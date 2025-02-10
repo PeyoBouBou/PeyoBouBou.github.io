@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercices sur le théorème de Pythagore</title>
+  <style>
+    /* Styles de base */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    h1 {
+      text-align: center;
+    }
+    .score {
+      font-weight: bold;
+      font-size: 1.2em;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .question {
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    input[type="text"] {
+      width: calc(100% - 22px);
+      padding: 10px;
+      font-size: 1em;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .feedback.error {
+      color: #d00;
+    }
+    .feedback.correct {
+      color: #080;
+    }
+    /* Animation simple (effet "pop") */
+    .animate {
+      animation: pop 0.5s ease-out;
+    }
+    @keyframes pop {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Exercices sur le théorème de Pythagore</h1>
+    <div class="score">
+      Score : <span id="score">0</span> / 100
+    </div>
+    <div id="exercise-container">
+      <!-- Le contenu des exercices sera inséré ici -->
+    </div>
+  </div>
+
+  <script>
+    // Définition des exercices
+    const exercises = [
+      {
+        question: `
+          <strong>Exercice 1 : Calcul de l'hypoténuse</strong><br>
+          Dans le triangle <em>ABC</em> rectangle en B, les côtés AB = 6 cm et BC = 8 cm.<br>
+          Calcule la longueur de AC.
+        `,
+        type: "number",
+        answer: 10,
+        tolerance: 0.01,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 2 : Calcul d'un côté</strong><br>
+          Dans le triangle <em>DEF</em>, rectangle en E, on connaît :<br>
+          - DF = 10 cm (hypoténuse)<br>
+          - DE = 6 cm<br>
+          Calcule la longueur du côté EF.
+        `,
+        type: "number",
+        answer: 8,
+        tolerance: 0.01,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 3 : Problème avec une échelle</strong><br>
+          Une échelle de 5 m est posée contre un mur. Le bas de l’échelle est à 3 m du pied du mur.<br>
+          À quelle hauteur l’échelle touche-t-elle le mur ? (Arrondir au dixième)
+        `,
+        type: "number",
+        answer: 4,
+        tolerance: 0.1,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 4 : Vrai ou faux ?</strong><br>
+          Dans un triangle GHI, on donne les longueurs suivantes :<br>
+          - GH = 7 cm<br>
+          - HI = 24 cm<br>
+          - GI = 25 cm<br>
+          Détermine si ce triangle est rectangle en vérifiant l’égalité du théorème de Pythagore.<br>
+          Réponds par "Vrai" ou "Faux".
+        `,
+        type: "text",
+        answer: "vrai",
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 5 : Distance entre deux points</strong><br>
+          Les coordonnées des points A et B sont respectivement A(2, 3) et B(8, 6).<br>
+          Calcule la distance entre ces deux points en utilisant le théorème de Pythagore.
+        `,
+        type: "number",
+        answer: Math.sqrt(Math.pow(8-2, 2) + Math.pow(6-3, 2)), // sqrt(36+9) = sqrt45 ≈ 6.708
+        tolerance: 0.1,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 6 : Terrain de football</strong><br>
+          Un terrain de football mesure 90 m de long et 45 m de large.<br>
+          On veut tendre une corde en diagonale entre deux coins opposés du terrain.<br>
+          Quelle doit être la longueur de la corde ?
+        `,
+        type: "number",
+        answer: Math.sqrt(90*90 + 45*45), // ≈ 100.623
+        tolerance: 0.1,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 7 : Application au triangle équilatéral</strong><br>
+          On a un triangle équilatéral de côté 10 cm.<br>
+          Calcule la hauteur de ce triangle en utilisant le théorème de Pythagore.
+        `,
+        type: "number",
+        answer: Math.sqrt(10*10 - Math.pow(10/2, 2)), // sqrt(100-25)=sqrt75 ≈ 8.66
+        tolerance: 0.1,
+        points: 10
+      }
+    ];
+
+    let currentExercise = 0;
+    let totalScore = 0;
+
+    const exerciseContainer = document.getElementById("exercise-container");
+    const scoreDisplay = document.getElementById("score");
+
+    // Fonction pour charger un exercice
+    function loadExercise(index) {
+      if (index >= exercises.length) {
+        // Fin des exercices
+        exerciseContainer.innerHTML = `
+          <h2>Félicitations !</h2>
+          <p>Vous avez terminé tous les exercices.<br>
+             Score final : ${totalScore} / 100.
+          </p>
+        `;
+        return;
+      }
+
+      const ex = exercises[index];
+      exerciseContainer.innerHTML = `
+        <div class="question">
+          ${ex.question}
+        </div>
+        <input type="text" id="user-answer" placeholder="Votre réponse">
+        <button id="submit-btn">Vérifier</button>
+        <div class="feedback" id="feedback"></div>
+      `;
+
+      document.getElementById("submit-btn").addEventListener("click", function() {
+        checkAnswer(ex);
+      });
+    }
+
+    // Fonction de vérification de la réponse
+    function checkAnswer(ex) {
+      const userAnswer = document.getElementById("user-answer").value.trim();
+      const feedback = document.getElementById("feedback");
+
+      if (userAnswer === "") {
+        feedback.textContent = "Veuillez entrer une réponse.";
+        feedback.className = "feedback error";
+        return;
+      }
+
+      let isCorrect = false;
+
+      if (ex.type === "number") {
+        // On autorise la virgule comme séparateur décimal
+        const userValue = parseFloat(userAnswer.replace(',', '.'));
+        if (isNaN(userValue)) {
+          feedback.textContent = "Veuillez entrer un nombre valide.";
+          feedback.className = "feedback error";
+          return;
+        }
+        if (Math.abs(userValue - ex.answer) <= ex.tolerance) {
+          isCorrect = true;
+        }
+      } else if (ex.type === "text") {
+        if (userAnswer.toLowerCase() === ex.answer.toLowerCase()) {
+          isCorrect = true;
+        }
+      }
+
+      if (isCorrect) {
+        // Mise à jour du score
+        totalScore += ex.points;
+        scoreDisplay.textContent = totalScore;
+        // Affichage du feedback positif avec animation
+        feedback.textContent = "Bonne réponse !";
+        feedback.className = "feedback correct animate";
+        // Retirer l'animation après 500 ms
+        setTimeout(() => {
+          feedback.classList.remove("animate");
+        }, 500);
+        // Passage à l'exercice suivant après un délai
+        setTimeout(() => {
+          currentExercise++;
+          loadExercise(currentExercise);
+        }, 1000);
+      } else {
+        feedback.textContent = "Mauvaise réponse, réessaye !";
+        feedback.className = "feedback error";
+      }
+    }
+
+    // Démarrage avec le premier exercice
+    loadExercise(currentExercise);
+  </script>
+</body>
+</html>
