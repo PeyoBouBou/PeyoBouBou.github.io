@@ -154,8 +154,8 @@
   <script>
     // Définition des exercices
     const exercises = [
-      {
-        question: `
+/*      {
+         question: `
           <strong>Exercice 1 : Calcul de l'hypoténuse</strong><br>
           Dans le triangle <em>ABC</em> rectangle en B, les côtés AB = 6 cm et BC = 8 cm.<br>
           Calcule la longueur de AC.
@@ -231,7 +231,7 @@
         answer: Math.sqrt(90*90 + 45*45), // ≈ 100.623
         tolerance: 0.1,
         points: 15
-      },
+      }, */
       {
         question: `
           <strong>Exercice 7 : Application au triangle équilatéral</strong><br>
@@ -242,8 +242,129 @@
         answer: Math.sqrt(10*10 - Math.pow(10/2, 2)), // ≈ 8.66
         tolerance: 0.1,
         points: 10
+      },
+      {
+        question: `
+          <strong>Exercice 8 : Triangle rectangle isocèle</strong><br>
+          Dans un triangle rectangle isocèle dont l'hypoténuse mesure 14 cm,<br>
+          calcule la longueur de chacun des côtés égaux.
+        `,
+        type: "number",
+        // La longueur de chaque côté est : 14 / √2 ≈ 9.90 cm
+        answer: 14 / Math.sqrt(2),
+        tolerance: 0.1,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 9 : Rectangle aux dimensions proportionnelles</strong><br>
+          Dans un rectangle, la longueur est le double de la largeur.<br>
+          Si la diagonale mesure 10√5 cm, calcule la largeur du rectangle.
+        `,
+        type: "number",
+        // Soit largeur = x, longueur = 2x, alors √(x² + (2x)²)=10√5 → √(5x²)=10√5 → x=10 cm.
+        answer: 10,
+        tolerance: 0.01,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 10 : Rapport dans un triangle rectangle</strong><br>
+          Dans un triangle rectangle, l'un des côtés adjacents à l'angle droit mesure 3/4 de l'hypoténuse.<br>
+          Si l'hypoténuse mesure 20 cm, calcule la longueur de l'autre côté adjacent à l'angle droit.
+        `,
+        type: "number",
+        // Un côté = (3/4)*20 = 15 cm, l'autre côté = √(20² - 15²)=√(400-225)=√175 ≈ 13.23 cm.
+        answer: Math.sqrt(20 * 20 - 15 * 15),
+        tolerance: 0.1,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 11 : Losange et ses diagonales</strong><br>
+          Dans un losange, les diagonales se coupent perpendiculairement.<br>
+          Si l'une mesure 12 cm et l'autre 16 cm, calcule la longueur d'un côté du losange.
+        `,
+        type: "number",
+        // Les demi-diagonales valent 6 cm et 8 cm, donc le côté = √(6² + 8²)=√(36+64)=√100 = 10 cm.
+        answer: 10,
+        tolerance: 0.01,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 12 : Système dans un triangle rectangle</strong><br>
+          Dans un triangle rectangle, la somme des deux côtés perpendiculaires est de 28 cm<br>
+          et leur différence est de 4 cm. Calcule la longueur de l'hypoténuse.
+        `,
+        type: "number",
+        // Soit a + b = 28 et a - b = 4 → a = 16, b = 12, puis l'hypoténuse = √(16²+12²)=√(256+144)=√400 = 20 cm.
+        answer: 20,
+        tolerance: 0.01,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 13 : Distance entre deux points</strong><br>
+          Dans un repère orthonormé, les points A(-3, 4) et B(5, -2) sont donnés.<br>
+          Calcule la distance entre A et B.
+        `,
+        type: "number",
+        // Différences : Δx = 5 - (-3) = 8 et Δy = -2 - 4 = -6, donc distance = √(8²+6²)=√(64+36)=√100 = 10 cm.
+        answer: 10,
+        tolerance: 0.01,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 14 : Altitude dans un triangle rectangle</strong><br>
+          Dans un triangle rectangle, l'altitude issue de l'angle droit coupe l'hypoténuse en deux segments.<br>
+          Si l'un des segments mesure 4 cm et l'altitude 3 cm, calcule la longueur de l'autre segment.
+        `,
+        type: "number",
+        // Relation : h² = p × q, donc q = h² / p = 9 / 4 = 2,25 cm.
+        answer: 9 / 4,
+        tolerance: 0.01,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 15 : Triangle inscrit dans un cercle</strong><br>
+          Dans un cercle de rayon 10 cm, on trace un triangle inscrit rectangle.<br>
+          Calcule la longueur de l'hypoténuse du triangle.
+        `,
+        type: "number",
+        // Dans un triangle rectangle inscrit dans un cercle, l'hypoténuse est le diamètre → 2 × 10 = 20 cm.
+        answer: 20,
+        tolerance: 0.01,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 16 : Triangle avec angle de 30°</strong><br>
+          Dans un triangle rectangle, l'un des angles aigus mesure 30°.<br>
+          Si le côté opposé à cet angle mesure 5 cm, calcule la longueur de l'hypoténuse.
+        `,
+        type: "number",
+        // D'après sin(30°)=0,5, donc hypoténuse = 5 / 0,5 = 10 cm.
+        answer: 10,
+        tolerance: 0.01,
+        points: 15
+      },
+      {
+        question: `
+          <strong>Exercice 17 : Diagonale d'une boîte rectangulaire</strong><br>
+          Une boîte rectangulaire a une longueur de 12 cm, une largeur de 9 cm et une hauteur de 6 cm.<br>
+          Calcule la longueur de sa diagonale.
+        `,
+        type: "number",
+        // Diagonale = √(12² + 9² + 6²) = √(144+81+36) = √261 ≈ 16,16 cm.
+        answer: Math.sqrt(12 * 12 + 9 * 9 + 6 * 6),
+        tolerance: 0.1,
+        points: 15
       }
     ];
+
 
     let currentExercise = 0;
     let totalScore = 0;
